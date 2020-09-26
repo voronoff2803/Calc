@@ -20,17 +20,34 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.d("TAG", savedInstanceState?.getString("value").toString())
         if (savedInstanceState != null) {
             textView.text = savedInstanceState.getString("value").toString()
+            setupAction(savedInstanceState.getString("action").toString())
+            println(savedInstanceState.getString("action").toString())
         } else {
             textView.text = "0"
+        }
+    }
+
+    fun setupAction(action: String) {
+        var button: Button? = null
+        when (action) {
+            "+" -> button = buttonPlus
+            "–" -> button = buttonMinus
+            "x" -> button = buttonMult
+            "/" -> button = buttonDevide
+        }
+
+        if (button != null) {
+            this.slectedButton = button
+            this.slectedButton?.let { setSelected(it) }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("value", textView.text.toString())
+        outState.putString("action", this.slectedButton?.text.toString())
     }
 
     fun buttonAction(view: View) {

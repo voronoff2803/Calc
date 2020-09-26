@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.util.Size
 import android.util.TypedValue.COMPLEX_UNIT_SP
@@ -19,7 +20,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        textView.text = "0"
+        Log.d("TAG", savedInstanceState?.getString("value").toString())
+        if (savedInstanceState != null) {
+            textView.text = savedInstanceState.getString("value").toString()
+        } else {
+            textView.text = "0"
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("value", textView.text.toString())
     }
 
     fun buttonAction(view: View) {
@@ -31,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             "Clear" -> {clearAction()}
             "." -> {dotAction()}
             "=" -> {resultAction()}
-            else -> { print("Android 💩") }
+            else -> { return }
         }
     }
 
